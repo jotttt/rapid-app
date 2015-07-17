@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!--_____ META ALGUS _______-->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--_____META LÕPP_______-->
+		<title>TTÜ | Dashboard</title>
+		<!--_____ PLUGINATE CSS _______-->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="font/font-awesome/css/font-awesome.css" rel="stylesheet">
+		<link href="css/plugins/iCheck/cherry.css" rel="stylesheet">
+		<link href="css/animate.css" rel="stylesheet">
+		<link href="css/plugins/awesomplete/awesomplete.css" rel="stylesheet">
+		<!--_____ LEHTEDE CSS _______-->
+		<link href="css/style.css" rel="stylesheet">
+
+	</head>
+
+	<body class="top-navigation">
+
+		<div id="wrapper">
+			<div id="page-wrapper" class="gray-bg">
+				<!--________ SISU ALGUS _____________-->
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="row">
+					<div class="col-lg-4">
+							<div class="ibox float-e-margins">
+								<div class="ibox-title">
+									<h5>Rapid modelleerimine</h5>
+									<div class="ibox-tools">
+										<a class="collapse-link">
+											<i class="fa fa-chevron-up"></i>
+										</a>
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+											<i class="fa fa-wrench"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-user">
+											<li><a href="#">Config option 1</a>
+											</li>
+											<li><a href="#">Config option 2</a>
+											</li>
+										</ul>
+										<a class="close-link">
+											<i class="fa fa-times"></i>
+										</a>
+									</div>
+								</div>
+								<div class="ibox-content">
+								<!-- RAPID APP DATA FROM JSON -->
+									<div id="rapid-users-placeholder"></div>
+								<!-- END RAPID APP DATA FROM JSON -->
+									<button type="button" class="btn btn-primary" id="rapid-update">Uuenda</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="ibox float-e-margins">
+								<div class="ibox-title">
+									<h5>Rapid modelleerimine</h5>
+									<div class="ibox-tools">
+										<a class="collapse-link">
+											<i class="fa fa-chevron-up"></i>
+										</a>
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+											<i class="fa fa-wrench"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-user">
+											<li><a href="#">Config option 1</a>
+											</li>
+											<li><a href="#">Config option 2</a>
+											</li>
+										</ul>
+										<a class="close-link">
+											<i class="fa fa-times"></i>
+										</a>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<table class="table table-striped table-bordered table-hover" id="editable">
+										<thead>
+											<tr>
+												<th>Nimi</th>
+												<th>R</th>
+												<th>A</th>
+												<th>P</th>
+												<th>I</th>
+												<th>D</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="60%"><input type="text"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+											</tr>
+											<tr>
+												<td width="60%"><input type="text"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+											</tr>
+											<tr>
+												<td width="60%"><input type="text"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+												<td width="8%"><input type="checkbox"></td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Nimi</th>
+												<th>R</th>
+												<th>A</th>
+												<th>P</th>
+												<th>I</th>
+												<th>D</th>
+											</tr>
+										</tfoot>
+									</table>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--________ SISU LÕPP ______________-->
+				<!--________ FOOTERI ALGUS ___________-->
+				<div class="footer">
+					<div class="pull-right">
+						Sul on vaba ruumi <strong>567MB</strong>
+					</div>
+					<div>
+						<strong>Copyright</strong> TTÜ &copy; 2014-2015
+					</div>
+				</div>
+				<!--________FOOTERI LÕPP____________-->
+			</div>
+		</div>
+		<!-- Mainly scripts -->
+		<script src="js/jquery-2.1.1.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+		<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		<script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+
+		<!-- Custom and plugin javascript -->
+		<script src="js/inspinia.js"></script>
+		<script src="js/plugins/pace/pace.min.js"></script>
+		<script src="js/plugins/iCheck/icheck.min.js"></script>
+		<script src="js/plugins/awesomplete/awesomplete.js"></script>
+		<script src="js/my_scripts.js"></script>
+
+		<!-- Page-Level Scripts -->
+		<script>
+
+				//________ CHECKBOXES AND RADIO BUTTONS BEGIN ____________//
+
+				$('input').iCheck({
+					checkboxClass: 'icheckbox_square-cherry',
+					radioClass: 'iradio_square-cherry',
+					increaseArea: '20%' // optional
+				});
+				//________ CHECKBOXES AND RADIO BUTTONS END ________//
+
+
+		</script>
+
+
+	</body>
+
+</html>
