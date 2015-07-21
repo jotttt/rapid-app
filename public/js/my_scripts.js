@@ -5,16 +5,30 @@ $(document).ready(function () {
 
 	//_______________FUNCTIONS _________________________
 
+	//INITIALIZE PRETTY CHECKBOXES
+	function initCheckboxes(){
+		var chkbx = function() {
+			$('#wrapper').find('input').iCheck({
+				checkboxClass: 'icheckbox_square-cherry',
+				radioClass: 'iradio_square-cherry',
+				increaseArea: '20%' // optional
+			});
+		};
+		chkbx();
+	} //end initCheckboxes
+
 	//DISPLAY RAPID APP DATA
 	function getRapidAppData(){
 		$.getJSON("js/json/rapid_data.json", function(rapid_json) {
 			var output = "<table class='table table-striped table-bordered table-hover table-rapid'><thead><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></thead><tbody>";
 			for (var i in rapid_json.rapid_users) {
-				output+="<tr><td width='60%'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name awesomplete' list='mylist'></td><td width='8%'><input type='checkbox' class='rapid-r'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
+				output+="<tr><td width='60%'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
 			}
 			output+="</tbody><tfoot><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></tfoot></table>";
 
 			document.getElementById("rapid-users-placeholder").innerHTML=output;
+
+			initCheckboxes();
 		});
 	} //end getRapidAppData
 
@@ -91,25 +105,44 @@ $(document).ready(function () {
 		$.post("js/write_rapid_app_data.php", {json : JSON.stringify(input)});
 		//LOG THE JSON OBJRCT TO CONSOLE FOR DEBUGGING
 		//console.log(JSON.stringify(input));
-	} //postRapidAppData
+	} //end postRapidAppData
 
 	//ADD USER TO RAPID APP
 	function addUserToRapidApp(){
-		$(".table-rapid tbody tr:last").after("<tr><td width='60%'><input type='text' value='isik' class='rapid-name awesomplete' list='mylist'></td><td width='8%'><input type='checkbox' class='rapid-r'></td><td width='8%'><input type='checkbox' class='rapid-a'></td><td width='8%'><input type='checkbox' class='rapid-p'></td><td width='8%'><input type='checkbox' class='rapid-i'></td><td width='8%'><input type='checkbox' class='rapid-d'></td></tr>");
-	} //addUserToRapidApp
+		$(".table-rapid tbody tr:last").after("<tr><td width='60%'><input type='text' value='Isik' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'></td></tr>");
+		//make the added row fade in
+		$(".table-rapid tbody tr:last").hide().fadeIn();
+		initCheckboxes();
+	} //end addUserToRapidApp
 
 	//________________EVENTS________________________________
 
 	//FETCH AND DISPLAY RAPID APP DATA
 	getRapidAppData();
 
-	//SEND CURRENT APP STATE WHEN BUTTON IS PRESSED
+	//SEND CURRENT APP STATE WHEN VARIOUS THINGS HAPPEN
 	$("#rapid-update").click(function(){
 		postRapidAppData();
 	});
+	$(document).on("blur", ".rapid-name", function() {
+		postRapidAppData();
+	});
+	$(document).on("change", ".rapid-chkbx", function() {
+		console.log("tere");
+	});
+
 	//ADD NEW USER TO RAPID TABLE WHEN BUTTON IS PRESSED
-	$("#add-new-rapid-user").click(function() {
+	$("#add-rapid-user").click(function() {
 		addUserToRapidApp();
+		setTimeout(postRapidAppData, 1000);
+	});
+
+	//REMOVE USER FROM RAPID TABLE UPDATE THE DATA
+	$(document).on("click", ".remove-rapid-user", function() {
+		$(this).parent().parent().fadeOut("normal", function() {
+			$(this).remove();
+		});
+		 setTimeout(postRapidAppData, 1000);
 	});
 
 });
