@@ -3,14 +3,14 @@
 
 $(document).ready(function () {
 
-	//_________________ FUNCTIONS _________________________
+	//_______________FUNCTIONS _________________________
 
-	//FUNCTION THAT DISPLAYS RAPID APP DATA
+	//DISPLAY RAPID APP DATA
 	function getRapidAppData(){
 		$.getJSON("js/json/rapid_data.json", function(rapid_json) {
 			var output = "<table class='table table-striped table-bordered table-hover table-rapid'><thead><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></thead><tbody>";
 			for (var i in rapid_json.rapid_users) {
-				output+="<tr><td width='60%'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name'></td><td width='8%'><input type='checkbox' class='rapid-r'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
+				output+="<tr><td width='60%'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name awesomplete' list='mylist'></td><td width='8%'><input type='checkbox' class='rapid-r'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
 			}
 			output+="</tbody><tfoot><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></tfoot></table>";
 
@@ -18,33 +18,7 @@ $(document).ready(function () {
 		});
 	} //end getRapidAppData
 
-	//OLD FUNCTION THAT UPDATES RAPID APP DATA
-	function oldpostRapidAppData(){
-
-		$.getJSON("js/json/rapid_data.json", function(rapid_json) {
-
-			var msgstring = $("#page-msg").val();
-
-			rapid_json.messages.push({"name": "Johann Laulik","message": msgstring});
-
-			$.post("js/write_rapid_app_data.php", {json : JSON.stringify(messages_json)});
-
-			$("#page-msg").val("");
-
-			msgstring = "";
-
-		});
-
-		//Seame peale delay, et php fail jõuaks tekstifaili messages.json töödelda, enne kui toimub kuva uuendus.
-		setTimeout(function() {
-
-			getMessages();
-
-		}, 100);
-
-	} //postRapidAppData
-
-	//FUNCTION THAT UPDATES RAPID APP DATA
+	//UPDATE RAPID APP DATA
 	function postRapidAppData(){
 		//DECLARE INPUT OBJECT THAT WILL BE SENT TO FILE ON DATA UPDATE
 		var input = {"rapid_users":[{}]};
@@ -119,6 +93,11 @@ $(document).ready(function () {
 		//console.log(JSON.stringify(input));
 	} //postRapidAppData
 
+	//ADD USER TO RAPID APP
+	function addUserToRapidApp(){
+		$(".table-rapid tbody tr:last").after("<tr><td width='60%'><input type='text' value='isik' class='rapid-name awesomplete' list='mylist'></td><td width='8%'><input type='checkbox' class='rapid-r'></td><td width='8%'><input type='checkbox' class='rapid-a'></td><td width='8%'><input type='checkbox' class='rapid-p'></td><td width='8%'><input type='checkbox' class='rapid-i'></td><td width='8%'><input type='checkbox' class='rapid-d'></td></tr>");
+	} //addUserToRapidApp
+
 	//________________EVENTS________________________________
 
 	//FETCH AND DISPLAY RAPID APP DATA
@@ -127,6 +106,10 @@ $(document).ready(function () {
 	//SEND CURRENT APP STATE WHEN BUTTON IS PRESSED
 	$("#rapid-update").click(function(){
 		postRapidAppData();
+	});
+	//ADD NEW USER TO RAPID TABLE WHEN BUTTON IS PRESSED
+	$("#add-new-rapid-user").click(function() {
+		addUserToRapidApp();
 	});
 
 });
