@@ -22,7 +22,7 @@ $(document).ready(function () {
 		$.getJSON("js/json/rapid_data.json", function(rapid_json) {
 			var output = "<table class='table table-striped table-bordered table-hover table-rapid'><thead><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></thead><tbody>";
 			for (var i in rapid_json.rapid_users) {
-				output+="<tr><td width='60%'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
+				output+="<tr><td width='60%' class='rapid-name-col'><input type='text' value='" + rapid_json.rapid_users[i].rapid_name + "' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user' style='visibility: hidden;'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'" + rapid_json.rapid_users[i].rapid_r + "></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'" + rapid_json.rapid_users[i].rapid_a + "></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'" + rapid_json.rapid_users[i].rapid_p + "></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'" + rapid_json.rapid_users[i].rapid_i + "></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'" + rapid_json.rapid_users[i].rapid_d + "></td></tr>";
 			}
 			output+="</tbody><tfoot><tr><th>Nimi</th><th>R</th><th>A</th><th>P</th><th>I</th><th>D</th></tr></tfoot></table>";
 
@@ -109,16 +109,41 @@ $(document).ready(function () {
 
 	//ADD USER TO RAPID APP
 	function addUserToRapidApp(){
-		$(".table-rapid tbody tr:last").after("<tr><td width='60%'><input type='text' value='Isik' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'></td></tr>");
-		//make the added row fade in
-		$(".table-rapid tbody tr:last").hide().fadeIn();
-		initCheckboxes();
+		//IF THERE IS ALREADY SOMEONE ON THE LIST
+		if ($(".table-rapid tbody tr:last").length > 0){
+			$(".table-rapid tbody tr:last").after("<tr><td width='60%' class='rapid-name-col'><input type='text' value='Uus isik' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'style='visibility: hidden;'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'></td></tr>");
+			//MAKE THE ADDED ROW FADE IN
+			$(".table-rapid tbody tr:last").hide().fadeIn();
+			//INIT CHECKBOXES
+			initCheckboxes();
+		}
+		//iF THIS IS THE FIRST PERSON TO BE ADDED
+		else{
+			$(".table-rapid tbody").append("<tr><td width='60%' class='rapid-name-col'><input type='text' value='Uus isik' class='rapid-name awesomplete' list='mylist'> <a class='fa fa-remove remove-rapid-user'style='visibility: hidden;'></td><td width='8%'><input type='checkbox' class='rapid-r rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-a rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-p rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-i rapid-chkbx'></td><td width='8%'><input type='checkbox' class='rapid-d rapid-chkbx'></td></tr>");
+			//MAKE THE ADDED ROW FADE IN
+			$(".table-rapid tbody tr").hide().fadeIn();
+			//INIT CHECKBOXES
+			initCheckboxes();
+		}
 	} //end addUserToRapidApp
+
+	//IF DATABASE IS EMPTY, CHANGE NAME VALUE FROM UNDEFINED TO UUS ISIK
+	function unDefinedName(){
+		if ($("table").length) {
+			console.log("This element is alive!");
+		}
+		else {
+			console.log("Element does not exist!");
+		}
+	}
 
 	//________________EVENTS________________________________
 
 	//FETCH AND DISPLAY RAPID APP DATA
 	getRapidAppData();
+
+	//CHECK IF DATABASE IS EMPTY
+	unDefinedName();
 
 	//SEND CURRENT APP STATE WHEN VARIOUS THINGS HAPPEN
 	$("#rapid-update").click(function(){
@@ -137,12 +162,21 @@ $(document).ready(function () {
 		setTimeout(postRapidAppData, 1000);
 	});
 
-	//REMOVE USER FROM RAPID TABLE UPDATE THE DATA
+	//REMOVE USER FROM RAPID TABLE AND UPDATE THE DATA
 	$(document).on("click", ".remove-rapid-user", function() {
 		$(this).parent().parent().fadeOut("normal", function() {
 			$(this).remove();
 		});
-		 setTimeout(postRapidAppData, 1000);
+		setTimeout(postRapidAppData, 1000);
+	});
+
+	//DISPLAY "REMOVE USER" BUTTON ONLY ON HOVER
+	$(document).on("mouseover", ".rapid-name-col", function() {
+		$(this).children(".remove-rapid-user").css("visibility","visible");
+	});
+
+	$(document).on("mouseout", ".rapid-name-col", function() {
+		$(this).children(".remove-rapid-user").css("visibility", "hidden");
 	});
 
 });
